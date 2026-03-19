@@ -86,20 +86,19 @@ Supported telemetry field keys:
 - `battery_voltage`
 - `battery_temp`
 
-## Cross-platform build targets
 
-Use PyInstaller to produce single-file executables (build on each target OS):
+## Love this project?
 
-```bash
-pip install pyinstaller
-pyinstaller -F -n opendronelog-overlay -m opendronelog_overlay.cli
-```
+Maintaining and improving this project takes a significant amount of my free time. Your support helps keep me motivated to add new features and work on similar projects that benefit the community.
 
-Build once on each platform for native binaries:
+If you find this project helpful, please consider:
 
-- Windows: produces `opendronelog-overlay.exe`
-- macOS: produces macOS binary
-- Linux: produces Linux binary
+⭐ Starring this repository to show your support and spread the news!
+
+☕ Buying me a coffee if you'd like to contribute to its maintenance and future development.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/arpandesign)
+
 
 ## Notes
 
