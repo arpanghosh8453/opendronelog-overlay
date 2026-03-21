@@ -165,6 +165,14 @@ def _pick_temp_c(row: dict[str, str], c_col: str, f_col: str) -> float | None:
     return (temp_f - 32.0) * (5.0 / 9.0)
 
 
+def _first_numeric(row: dict[str, str], columns: list[str]) -> float | None:
+    for col in columns:
+        value = _f(row.get(col))
+        if value is not None:
+            return value
+    return None
+
+
 def convert_odl_to_airdata(input_csv: Path, output_csv: Path) -> None:
     with input_csv.open("r", newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
@@ -209,6 +217,18 @@ def convert_odl_to_airdata(input_csv: Path, output_csv: Path) -> None:
             pitch = _f(row.get("pitch_deg"))
             roll = _f(row.get("roll_deg"))
             yaw = _f(row.get("yaw_deg"))
+            gimbal_pitch = _first_numeric(
+                row,
+                ["gimbal_pitch_deg", "gimbal_pitch", "gimbal_pitch(deg)"],
+            )
+            gimbal_roll = _first_numeric(
+                row,
+                ["gimbal_roll_deg", "gimbal_roll", "gimbal_roll(deg)"],
+            )
+            gimbal_yaw = _first_numeric(
+                row,
+                ["gimbal_yaw_deg", "gimbal_heading_deg", "gimbal_yaw", "gimbal_heading"],
+            )
 
             if lat is not None and lon is not None and prev_lat is not None and prev_lon is not None:
                 mileage_m += _haversine_m(prev_lat, prev_lon, lat, lon)
@@ -235,6 +255,7 @@ def convert_odl_to_airdata(input_csv: Path, output_csv: Path) -> None:
                 max_distance = max(max_distance, distance)
 
             heading = None if yaw is None else (yaw % 360.0 + 360.0) % 360.0
+            gimbal_heading = None if gimbal_yaw is None else (gimbal_yaw % 360.0 + 360.0) % 360.0
 
             dt_text = ""
             if start_dt is not None and time_s is not None:
@@ -276,6 +297,9 @@ def convert_odl_to_airdata(input_csv: Path, output_csv: Path) -> None:
             out_row["rc_aileron(percent)"] = _s(row.get("rc_aileron", ""))
             out_row["rc_throttle(percent)"] = _s(row.get("rc_throttle", ""))
             out_row["rc_rudder(percent)"] = _s(row.get("rc_rudder", ""))
+            out_row["gimbal_heading(degrees)"] = _fmt_float(gimbal_heading, 1)
+            out_row["gimbal_pitch(degrees)"] = _fmt_float(gimbal_pitch, 1)
+            out_row["gimbal_roll(degrees)"] = _fmt_float(gimbal_roll, 1)
             out_row["battery_percent"] = _i_from_float(battery_percent)
             out_row["voltageCell1"] = cells[0]
             out_row["voltageCell2"] = cells[1]
