@@ -86,6 +86,23 @@ Supported telemetry field keys:
 - `battery_voltage`
 - `battery_temp`
 
+## AirData CSV Conversion
+
+Some external software only accepts telemetry in AirData CSV format.
+
+If your CSV exports are from OpenDroneLog, convert them first using one of these options:
+
+- Web converter: https://opendronelog.streamlit.app/
+- Local script: `opendronelog_overlay/ODL_2_AD.py`
+
+Example local conversion:
+
+```bash
+python ./opendronelog_overlay/ODL_2_AD.py ./input_odl.csv ./output_airdata.csv
+```
+
+Then use `./output_airdata.csv` with software that requires AirData-style columns.
+
 
 ## Love this project?
 
