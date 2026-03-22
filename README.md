@@ -92,7 +92,7 @@ Some external software only accepts telemetry in AirData CSV format.
 
 If your CSV exports are from OpenDroneLog, convert them first using one of these options:
 
-- Web converter: https://opendronelog.streamlit.app/
+- Web converter: https://open-dronelog.streamlit.app/
 - Local script: `opendronelog_overlay/ODL_2_AD.py`
 
 Example local conversion:
